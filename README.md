@@ -71,10 +71,11 @@ Then open [http://localhost:5000](http://localhost:5000) in your browser.
 ## 📚 Technologies Used
 
 - Python
-- TensorFlow / Keras
+- TensorFlow , Keras , Pandas
 - OpenCV
 - Flask (for web interface)
-- HTML/CSS
+- HTML, CSS, Js
+- MySQL (Database)
 
 ## 🧪 Dataset
 
