@@ -1,0 +1,124 @@
+<head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css')}}">
+        <title>Breast Cancer Detection</title>
+</head>
+{% extends 'base.html' %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="logo">Breast Cancer Detection</div>
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="profile">My Profile</a></li>
+        <li><a href="logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="dashboard-container">
+    <div class="left-section">
+        <h2>Upload Mammography Image</h2>
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file-upload">Select Image</label>
+                <input type="file" id="file-upload" name="file" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn-upload">Upload and Analyze</button>
+        </form>
+        <div id="preview-container" style="display: none;">
+            <h3>Image Preview</h3>
+            <img id="image-preview" src="" alt="Preview" style="max-width: 100%;">
+        </div>
+    </div>
+
+    <div class="right-section">
+        <h2>Analysis Result</h2>
+        <div id="result-container">
+            <p>No results yet. Upload an image to analyze.</p>
+        </div>
+        <div id="loader" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing image...</p>
+        </div>
+    </div>
+
+</div>
+<div class="graph-section">
+    <h2>Confidence Analysis</h2>
+    <div id="graph-container">
+        <p>Graph will appear here after analysis.</p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('file-upload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('image-preview').src = e.target.result;
+            document.getElementById('preview-container').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+
+document.getElementById('upload-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const resultContainer = document.getElementById('result-container');
+    const graphContainer = document.getElementById('graph-container');
+    const loader = document.getElementById('loader');
+
+    try {
+        resultContainer.style.display = 'none';
+        graphContainer.style.display = 'none';
+        loader.style.display = 'block';
+
+        const response = await fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.error) {
+            throw new Error(result.error);
+        }
+
+        // Update result container
+        let resultHTML = `
+            <div class="result-card ${result.diagnosis.toLowerCase()}">
+                <div class="diagnosis-label">DIAGNOSIS</div>
+                <div class="diagnosis-result">${result.diagnosis}</div>
+        `;
+
+        if (result.diagnosis === 'Malignant') {
+            resultHTML += `
+                <div class="stage-label">CANCER STAGE</div>
+                <div class="stage-result">Stage ${result.stage}</div>
+            `;
+        }
+
+        resultHTML += '</div>';
+        resultContainer.innerHTML = resultHTML;
+
+        // Update graph container
+        graphContainer.innerHTML = `
+            <img src="data:image/png;base64,${result.confidence_graph}"
+                 alt="Confidence Graph"
+                 class="confidence-graph-img">
+        `;
+
+    } catch (error) {
+        resultContainer.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+        graphContainer.innerHTML = `<p class="error">Graph could not be generated</p>`;
+    } finally {
+        loader.style.display = 'none';
+        resultContainer.style.display = 'block';
+        graphContainer.style.display = 'block';
+    }
+});
+</script>
+{% endblock %}

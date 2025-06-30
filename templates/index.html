@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Breast Cancer Detection</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="hero">
+        <img src="../static/images/Early-detection-1.jpg" alt="Banner Image">
+        <div class="overlay">
+            <h1>Welcome to Breast Cancer Detection System</h1>
+            <p>Detect the Breast Cancer Using Mammography Images</p>
+            <button onclick="window.location.href='login';">Get Started</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Features</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Accurate Cancer Detection</h5>
+                            <p class="card-text">Leverage the power of cutting-edge technologies like ResNet50 and SVM to ensure accurate breast cancer classification. Our system differentiates between benign and malignant tumors with high precision, providing timely and reliable results.
+
+</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Stage Classification for Malignant Tumors
+</h5>
+                            <p class="card-text">Go beyond detection—our system identifies the stage of malignant tumors based on tumor size. This stage classification helps in formulating better treatment plans and improving patient outcomes.
+
+</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">User-Friendly Interface
+</h5>
+                            <p class="card-text">Access advanced diagnostic tools through a seamless, intuitive interface. Upload images, view results, and gain insights into tumor classification and staging—all in a few clicks. Designed for ease of use by both healthcare professionals and patients.
+
+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Your Company Name. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+</body>
+</html>
